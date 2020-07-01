@@ -1,0 +1,12 @@
+@import "../../scss/variables/variables";
+.header {
+  border-bottom: 1px solid $color-border;
+  margin: 2.5rem 0 2rem 0;
+
+  &__title {
+    margin: 1.5rem 0;
+    font-size: 3rem;
+    text-align: center;
+    color: $color-heading;
+  }
+}
