@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
-import "./App.css";
+import "./App.scss";
 import Header from "./components/Header/Header.jsx";
 import EstateList from "./components/EstateList/EstateList.jsx";
 import EstateComparison from "./components/EstateComparison/EstateComparison.jsx";
-import { BASE_URL } from "./api/estateApi.js";
+import EstateApi from "./api/EstateApi.js";
 
 function App() {
   const [estatesData, setEstatesData] = useState([]);
@@ -14,53 +14,29 @@ function App() {
 
   const getEstatesData = async () => {
     setIsLoading(true);
-    const response = await fetch(`${BASE_URL}/list.php`);
-    const data = await response.json();
-    setEstatesData(data);
-    setIsLoading(false);
+    EstateApi.getAllEstates(setEstatesData, setIsLoading);
   };
 
   useEffect(() => {
     getEstatesData();
   }, []);
 
-  /////JAK UDĚLAT ABYCH SE NEOPAKOVAL???
   const changeSelection = (estateId) => {
     if (currentSelection === "A") {
-      if (firstSelectedId === estateId) {
-        //setFirstSelectedId(null);
-      } else if (!firstSelectedId && !secondSelectedId) {
-        setFirstSelectedId(estateId);
+      if (secondSelectedId === estateId) {
+        setSecondSelectedId(estateId);
         setCurrentSelection("B");
-      } else if (!firstSelectedId && secondSelectedId) {
+      } else {
         setFirstSelectedId(estateId);
         setCurrentSelection("A");
-      } else if (firstSelectedId) {
-        if (secondSelectedId === estateId) {
-          setSecondSelectedId(estateId);
-          setCurrentSelection("B");
-        } else {
-          setFirstSelectedId(estateId);
-          setCurrentSelection("A");
-        }
       }
     } else if (currentSelection === "B") {
-      if (secondSelectedId === estateId) {
-        //setSecondSelectedId(null);
-      } else if (!secondSelectedId && !firstSelectedId) {
-        setSecondSelectedId(estateId);
+      if (firstSelectedId === estateId) {
+        setFirstSelectedId(estateId);
         setCurrentSelection("A");
-      } else if (!secondSelectedId && firstSelectedId) {
+      } else {
         setSecondSelectedId(estateId);
         setCurrentSelection("B");
-      } else if (firstSelectedId) {
-        if (firstSelectedId === estateId) {
-          setFirstSelectedId(estateId);
-          setCurrentSelection("A");
-        } else {
-          setSecondSelectedId(estateId);
-          setCurrentSelection("B");
-        }
       }
     }
   };

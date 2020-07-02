@@ -10,31 +10,19 @@ const EstateList = (props) => {
     firstSelectedId,
     secondSelectedId,
   } = props;
-  const renderEstateList = () => {
-    //JE LEPŠÍ FOR LOOP (KVŮLI BREAK KDYŽ MÁM 120+ OBJEKTŮ V JSONU) NEBO RADŠI MODERNÍ JS (FOREACH / MAP)???
-    let list = [];
-    for (let i = 0; i < estatesData.length; i++) {
-      if (i < 10) {
-        let estate = (
-          <EstatePreview
-            handleSelect={handleSelect}
-            key={estatesData[i].id}
-            estateData={estatesData[i]}
-            firstSelectedId={firstSelectedId}
-            secondSelectedId={secondSelectedId}
-          />
-        );
-        list.push(estate);
-      } else {
-        break;
-      }
-    }
-    return list;
-  };
 
   return (
     <section className="estate-list">
-      {estatesData.length > 0 && renderEstateList()}
+      {estatesData.length > 0 &&
+        estatesData.map((estateData) => (
+          <EstatePreview
+            handleSelect={handleSelect}
+            key={estateData.id}
+            estateData={estateData}
+            firstSelectedId={firstSelectedId}
+            secondSelectedId={secondSelectedId}
+          />
+        ))}
     </section>
   );
 };

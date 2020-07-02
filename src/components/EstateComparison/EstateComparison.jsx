@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./estatecomparison.scss";
 import EstateCard from "../EstateCard/EstateCard";
-import { BASE_URL } from "../../api/estateApi.js";
+import EstateApi from "../../api/EstateApi.js";
 
 const compareData = (first, second) => {
   return Number(first) >= Number(second) ? "first" : "second";
@@ -10,61 +10,66 @@ const compareData = (first, second) => {
 const EstateComparison = ({ firstSelectedId, secondSelectedId }) => {
   const [firstEstateData, setFirstEstateData] = useState(null);
   const [secondEstateData, setSecondEstateData] = useState(null);
-
-  const getEstateData = async (estateId, setDataToState) => {
-    const response = await fetch(`${BASE_URL}/detail.php?id=${estateId}`);
-    const data = await response.json();
-    setDataToState(data);
-  };
+  const [isLoadingFirst, setIsLoadingFirst] = useState(true);
+  const [isLoadingSecond, setIsLoadingSecond] = useState(true);
+  const [comparison, setComparison] = useState({});
 
   useEffect(() => {
-    firstSelectedId && getEstateData(firstSelectedId, setFirstEstateData);
+    setIsLoadingFirst(true);
+    EstateApi.getEstateDetail(
+      firstSelectedId,
+      setFirstEstateData,
+      setIsLoadingFirst
+    );
   }, [firstSelectedId]);
 
   useEffect(() => {
-    secondSelectedId && getEstateData(secondSelectedId, setSecondEstateData);
+    setIsLoadingSecond(true);
+    EstateApi.getEstateDetail(
+      secondSelectedId,
+      setSecondEstateData,
+      setIsLoadingSecond
+    );
   }, [secondSelectedId]);
 
-  ///NĚJAK ZABALIT DO FUNKCE???
+  useEffect(() => {
+    if (firstEstateData && secondEstateData) {
+      const priceComparison = compareData(
+        firstEstateData.prize_czk,
+        secondEstateData.prize_czk
+      );
 
-  const priceComparison = compareData(
-    firstEstateData?.prize_czk,
-    secondEstateData?.prize_czk
-  );
+      const buildingAreaComparison = compareData(
+        firstEstateData.building_area,
+        secondEstateData.building_area
+      );
 
-  const buildingAreaComparison = compareData(
-    firstEstateData?.building_area,
-    secondEstateData?.building_area
-  );
-
-  const landAreaComparison = compareData(
-    firstEstateData?.land_area,
-    secondEstateData?.land_area
-  );
-
-  /// MÁ SMYSL TO DÁVAT DO OBJEKTU ABYCH TO POSLAL PŘES PROPS, NEBO JE HEZČÍ TO VYPSAT ROVNOU?
-  const comparison = {
-    priceComparison,
-    buildingAreaComparison,
-    landAreaComparison,
-  };
+      const landAreaComparison = compareData(
+        firstEstateData.land_area,
+        secondEstateData.land_area
+      );
+      setComparison({
+        priceComparison,
+        buildingAreaComparison,
+        landAreaComparison,
+      });
+    }
+  }, [firstEstateData, secondEstateData]);
 
   return (
     <section className="estate-comparison">
-      {
-        <EstateCard
-          estateData={firstEstateData}
-          comparison={comparison}
-          order={"first"}
-        />
-      }
-      {
-        <EstateCard
-          estateData={secondEstateData}
-          comparison={comparison}
-          order={"second"}
-        />
-      }
+      <EstateCard
+        estateData={firstEstateData}
+        comparison={comparison}
+        isLoading={isLoadingFirst}
+        order={"first"}
+      />
+      <EstateCard
+        estateData={secondEstateData}
+        comparison={comparison}
+        isLoading={isLoadingSecond}
+        order={"second"}
+      />
     </section>
   );
 };
