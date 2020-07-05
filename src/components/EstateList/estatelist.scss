@@ -3,5 +3,8 @@
 .estate-list {
   display: flex;
   justify-content: center;
-  margin: 1rem;
+  flex-wrap: wrap;
+  height: 112px;
+  margin: 1rem auto;
+  overflow: hidden;
 }

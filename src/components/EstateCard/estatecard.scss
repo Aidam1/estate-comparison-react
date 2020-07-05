@@ -5,7 +5,7 @@
   border-radius: 5px;
   padding: 0.5rem;
   line-height: 1.5rem;
-  margin: 0 0.5rem;
+  margin: 0 0.5rem 2rem 0.5rem;
 
   &__table {
     max-width: 400px;
@@ -52,10 +52,10 @@
 .estate-card-loader {
   border: 1px solid $color-border;
   border-radius: 5px;
-  margin: 0 0.5rem;
-  text-align: center;
+  margin: 0 0.5rem 2rem 0.5rem;
   width: 417px;
   height: 580px;
-  line-height: 580px;
-  background-color: #f2f3f5;
+  display: grid;
+  place-items: center;
+  background-color: $color-loader;
 }

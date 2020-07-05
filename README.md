@@ -1,6 +1,6 @@
 # Estate Comparison - React
 
-Project estate-comparison-static made in React
+Project estate-comparison-static made in React.
 
 ## Available scripts
 

@@ -6,6 +6,6 @@
   background-color: $color-loader;
   margin: 1rem auto;
   width: 95%;
-  text-align: center;
-  line-height: 112px;
+  display: grid;
+  place-items: center;
 }
