@@ -53,9 +53,9 @@
   border: 1px solid $color-border;
   border-radius: 5px;
   margin: 0 0.5rem;
-  text-align: center;
   width: 417px;
   height: 580px;
-  line-height: 580px;
+  display: grid;
+  place-items: center;
   background-color: #f2f3f5;
 }
